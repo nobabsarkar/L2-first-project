@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../errors/AppError';
@@ -17,10 +19,16 @@ const auth = (...requiredRoles: TUserRole[]) => {
     }
 
     // check if the token is valid
-    const decoded = jwt.verify(
-      token,
-      config.jwt_access_secret as string,
-    ) as JwtPayload;
+    let decoded;
+
+    try {
+      decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string,
+      ) as JwtPayload;
+    } catch (err) {
+      throw new AppError(StatusCodes.UNAUTHORIZED, 'Unauthorized');
+    }
 
     const { role, userId, iat } = decoded;
 

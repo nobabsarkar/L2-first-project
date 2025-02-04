@@ -203,7 +203,7 @@ const resetPassword = async (
     id: string;
     newPassword: string;
   },
-  token,
+  token: string,
 ) => {
   // checking if the user is exist
   const user = await User.isUserExistsByCustomId(payload?.id);
