@@ -7,7 +7,7 @@ import auth from '../../middleweres/auth';
 const router = express.Router();
 
 router.post(
-  '/create-academicSemester',
+  '/create-academic-semester',
   validateRequest(
     AcademicSemesterValidationSchema.createAcademicSemesterValidation,
   ),
@@ -23,6 +23,14 @@ router.get(
   '/',
   auth('admin'),
   AcademicSemesterController.getAllAcademicSemester,
+);
+
+router.patch(
+  '/:courseId',
+  validateRequest(
+    AcademicSemesterValidationSchema.updateAcademicSemesterValidationSchema,
+  ),
+  AcademicSemesterController.updateAcademicSemester,
 );
 
 export const AcademicSemesterRoutes = router;
