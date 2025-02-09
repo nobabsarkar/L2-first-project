@@ -196,6 +196,8 @@ const forgetPassword = async (userId: string) => {
   const resetUILink = `${config.reset_password_ui_link}?id=${user.id}&token=${resetToken}`;
 
   sendEmail(user.email, resetUILink);
+
+  // console.log(resetUILink);
 };
 
 const resetPassword = async (
@@ -228,6 +230,28 @@ const resetPassword = async (
     token,
     config.jwt_access_secret as string,
   ) as JwtPayload;
+
+  if (payload.id !== decoded.userId) {
+    throw new AppError(StatusCodes.FORBIDDEN, 'You are forbidden!');
+  }
+
+  // hash new password
+  const newHashedPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  await User.findOneAndUpdate(
+    {
+      id: decoded.userId,
+      role: decoded.role,
+    },
+    {
+      password: newHashedPassword,
+      needsPasswordChange: false,
+      passwordChangeAt: new Date(),
+    },
+  );
 };
 
 export const AuthServices = {
