@@ -5,30 +5,16 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 
 const createStudent = catchAsync(async (req, res) => {
-  // creating a schema validation using zot
+  console.log(req.file, 'file');
 
   const { password, student: studentData } = req.body;
-  // data validation using Joi
-  // const { error, value } = studentValidationSchema.validate(studentData);
 
-  // data validation using zod
-  // const zodparseData = studentValidationSchema.parse(studentData);
+  const result = await UserService.createStudentIntoDB(
+    req.file,
+    password,
+    studentData,
+  );
 
-  const result = await UserService.createStudentIntoDB(password, studentData);
-
-  // if (error) {
-  //   res.status(500).json({
-  //     success: false,
-  //     message: 'something went wrong',
-  //     error: error.details,
-  //   });
-  // }
-
-  // res.status(200).json({
-  //   success: true,
-  //   message: 'Student is retrived successfully',
-  //   data: result,
-  // });
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -62,8 +48,42 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
+const getMe = catchAsync(async (req, res) => {
+  // const token = req.headers.authorization;
+
+  // if (!token) {
+  //   throw new AppError(StatusCodes.NOT_FOUND, 'Token not found!');
+  // }
+
+  const { userId, role } = req.user;
+
+  const result = await UserService.getMe(userId, role);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'User is retrieved successfully',
+    data: result,
+  });
+});
+
+const changeStatus = catchAsync(async (req, res) => {
+  const id = req.params.id;
+
+  const result = await UserService.changeStatus(id, req.body);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Status is Updated successfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createStudent,
   createFaculty,
   createAdmin,
+  changeStatus,
+  getMe,
 };

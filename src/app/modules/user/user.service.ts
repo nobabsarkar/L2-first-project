@@ -18,8 +18,13 @@ import { AcademicDepartment } from '../academicDepartment/academicDepartment.mod
 import { Faculty } from '../Faculty/faculty.model';
 import { TAdmin } from '../Admin/admin.interface';
 import { Admin } from '../Admin/admin.model';
+import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 
-const createStudentIntoDB = async (password: string, payload: TStudent) => {
+const createStudentIntoDB = async (
+  file: any,
+  password: string,
+  payload: TStudent,
+) => {
   // create a user object
   const userData: Partial<TUser> = {};
 
@@ -49,6 +54,11 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
       userData.id = await generateStudentId(admissionSemester);
     }
 
+    const imageName = `${userData?.id}${payload?.name?.firstName}`;
+    const path = file?.path;
+    // send image to cloudinary
+    const { secure_url }: any = await sendImageToCloudinary(imageName, path);
+
     // create a user (transaction-1)
     const newUser = await User.create([userData], { seation }); // array
 
@@ -59,6 +69,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     // set id , _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id; //user referance _id
+    payload.profileImage = secure_url;
 
     // create a user (transaction-2)
     const newStudent = await Student.create([payload], { seation });
@@ -191,8 +202,38 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
   }
 };
 
+const changeStatus = async (id: string, payload: { status: string }) => {
+  const result = await User.findByIdAndUpdate(id, payload, { new: true });
+
+  return result;
+};
+
+const getMe = async (userId: string, role: string) => {
+  // const decoded = verifyToken(token, config.jwt_access_secret as string);
+
+  // const { userId, role } = decoded;
+
+  let result = null;
+
+  if (role === 'student') {
+    result = await Student.findOne({ id: userId }).populate('user');
+  }
+
+  if (role === 'admin') {
+    result = await Admin.findOne({ id: userId }).populate('user');
+  }
+
+  if (role === 'faculty') {
+    result = await Admin.findOne({ id: userId }).populate('user');
+  }
+
+  return result;
+};
+
 export const UserService = {
   createStudentIntoDB,
   createFacultyIntoDB,
   createAdminIntoDB,
+  changeStatus,
+  getMe,
 };

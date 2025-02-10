@@ -2,12 +2,17 @@ import express from 'express';
 import { StudentControllers } from './student.controller';
 import validateRequest from '../../middleweres/validateRequest';
 import { studentValidations } from './student.validation';
+import auth from '../../middleweres/auth';
 
 const router = express.Router();
 
 // will call controller function
 
-router.get('/:id', StudentControllers.getSingleStudents);
+router.get(
+  '/:id',
+  auth('admin', 'faculty'),
+  StudentControllers.getSingleStudents,
+);
 
 router.patch(
   '/:id',
