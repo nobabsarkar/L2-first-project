@@ -58,21 +58,21 @@ const enrolledCourseSchema = new Schema<TEnorolledCourse>({
     ref: 'AcademicDepartment',
     required: true,
   },
-  //   offeredCourse: {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'OfferedCourse',
-  //     required: true,
-  //   },
+  offeredCourse: {
+    type: Schema.Types.ObjectId,
+    ref: 'OfferedCourse',
+    required: true,
+  },
   course: {
     type: Schema.Types.ObjectId,
     ref: 'Course',
     required: true,
   },
-  //   student: {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Student',
-  //     required: true,
-  //   },
+  student: {
+    type: Schema.Types.ObjectId,
+    ref: 'Student',
+    required: true,
+  },
   faculty: {
     type: Schema.Types.ObjectId,
     ref: 'Faculty',
@@ -101,8 +101,8 @@ const enrolledCourseSchema = new Schema<TEnorolledCourse>({
     type: Boolean,
     default: false,
   },
-  startTime: { type: String, required: true },
-  endTime: { type: String, required: true },
+  // startTime: { type: String, required: true },
+  // endTime: { type: String, required: true },
 });
 
 const EnrolledCourse = mongoose.model<TEnorolledCourse>(

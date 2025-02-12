@@ -20,14 +20,17 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
   const courseQuery = new QueryBuilder(
     Course.find().populate('preRequisiteCourses.course'),
     query,
-  );
-  // .search(CourseSearchableFields)
-  // .filter()
-  // .sort()
-  // .paginate()
-  // .fields();
+  )
+    .search(CourseSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
   const result = await courseQuery.modelQuery;
-  return result;
+  const meta = await courseQuery.countTotal();
+  console.log({ result, meta });
+  return { result, meta };
 };
 
 const getSingleCourseFromDB = async (id: string) => {
