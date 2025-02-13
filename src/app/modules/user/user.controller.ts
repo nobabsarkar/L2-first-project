@@ -5,8 +5,6 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 
 const createStudent = catchAsync(async (req, res) => {
-  console.log(req.file, 'file');
-
   const { password, student: studentData } = req.body;
 
   const result = await UserService.createStudentIntoDB(
@@ -26,7 +24,11 @@ const createStudent = catchAsync(async (req, res) => {
 const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty } = req.body;
 
-  const result = await UserService.createFacultyIntoDB(password, faculty);
+  const result = await UserService.createFacultyIntoDB(
+    req.file,
+    password,
+    faculty,
+  );
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -38,7 +40,7 @@ const createFaculty = catchAsync(async (req, res) => {
 
 const createAdmin = catchAsync(async (req, res) => {
   const { password, admin } = req.body;
-  const result = await UserService.createAdminIntoDB(password, admin);
+  const result = await UserService.createAdminIntoDB(req.file, password, admin);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
