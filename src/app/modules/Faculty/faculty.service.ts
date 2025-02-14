@@ -67,7 +67,6 @@ const deleteFacultyFromDB = async (id: string) => {
       throw new AppError(StatusCodes.BAD_REQUEST, 'Failed to delete faculty');
     }
 
-    // get user _id from deleteFaculty
     const userId = deleteFaculty.user;
 
     const deleteUser = await User.findByIdAndUpdate(

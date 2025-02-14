@@ -165,7 +165,6 @@ studentSchema.pre('findOne', function (next) {
 });
 
 // aggregate pipeline
-// [{ $match: { isDeleted: { $ne: true } } }, { $match: { id: '123456' } }];
 studentSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();

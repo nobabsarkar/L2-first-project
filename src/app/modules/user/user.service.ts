@@ -90,9 +90,6 @@ const createStudentIntoDB = async (
     console.log(err);
     throw new Error('Failed to create student');
   }
-
-  // set manually generated id
-  // userData.id = '20300138';
 };
 
 const createFacultyIntoDB = async (
@@ -149,7 +146,6 @@ const createFacultyIntoDB = async (
     payload.user = newUser[0]._id; // referance _id
 
     // create a faculty (transaction-2)
-
     const newFaculty = await Faculty.create([payload], { session });
 
     if (!newFaculty.length) {
@@ -237,10 +233,6 @@ const changeStatus = async (id: string, payload: { status: string }) => {
 };
 
 const getMe = async (userId: string, role: string) => {
-  // const decoded = verifyToken(token, config.jwt_access_secret as string);
-
-  // const { userId, role } = decoded;
-
   let result = null;
 
   if (role === 'student') {

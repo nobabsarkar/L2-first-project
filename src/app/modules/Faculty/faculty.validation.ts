@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { BloodGroup, Gender } from './faculty.constant';
+import validator from 'validator';
 
 const createUserNameValidationSchema = z.object({
   firstName: z
@@ -15,20 +16,22 @@ const createUserNameValidationSchema = z.object({
 
 export const createFacultyValidation = z.object({
   body: z.object({
-    password: z.string().max(20),
+    password: z.string().max(20).optional(),
     faculty: z.object({
       designation: z.string(),
       name: createUserNameValidationSchema,
       gender: z.enum([...Gender] as [string, ...string[]]),
       detaOfBirth: z.string().optional(),
-      email: z.string().email(),
+      // email: z.string().email(),
+      email: z.string().refine((value) => validator.isEmail(value), {
+        message: 'Invalid email format',
+      }),
       contactNo: z.string(),
       emergencyContactNo: z.string(),
       bloodGroup: z.enum([...BloodGroup] as [string, ...string[]]),
       presentAddress: z.string(),
       permanentAddress: z.string(),
       academicDepartment: z.string(),
-      profileImg: z.string(),
     }),
   }),
 });
