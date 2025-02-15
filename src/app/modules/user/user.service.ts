@@ -120,7 +120,7 @@ const createFacultyIntoDB = async (
     );
   }
 
-  payload.academicDepartment = academicDepartment.academicFaculty;
+  payload.academicDepartment = academicDepartment?.academicFaculty;
 
   const session = await mongoose.startSession();
 
