@@ -19,7 +19,7 @@ router.post(
 router.get(
   '/my-enrolled-courses',
   auth(USER_ROLE.student),
-  EnrolledCourseControllers.getAllEnrolledCourse,
+  EnrolledCourseControllers.getMyEnrolledCourses,
 );
 
 router.patch(

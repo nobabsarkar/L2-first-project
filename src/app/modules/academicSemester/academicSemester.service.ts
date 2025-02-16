@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import AppError from '../../errors/AppError';
 import {
-  AcademicSemesterName,
   academicSemesterNameCodeMapper,
+  AcademicSemesterSearchableFields,
 } from './academicSemester.constant';
 import { TAcademicSemester } from './academicSemester.interface';
 import { AcademicSemester } from './academicSemester.model';
@@ -22,20 +22,23 @@ const getSilgleAcademicSemesterIntoDB = async (_id: string) => {
   return result;
 };
 
-// const getAllAcademicSemesterIntoDB = async () => {
-//   const result = await AcademicSemester.find();
-//   return result;
-// };
-
-const getAllAcademicSemesterIntoDB = async (query: Record<string, unknown>) => {
-  const adminQuery = new QueryBuilder(AcademicSemester.find(), query)
-    .search(AcademicSemesterName)
+const getAllAcademicSemestersFromDB = async (
+  query: Record<string, unknown>,
+) => {
+  const academicSemesterQuery = new QueryBuilder(AcademicSemester.find(), query)
+    .search(AcademicSemesterSearchableFields)
     .filter()
     .sort()
     .paginate()
     .fields();
-  const result = await adminQuery.modelQuery;
-  return result;
+
+  const result = await academicSemesterQuery.modelQuery;
+  const meta = await academicSemesterQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
 };
 
 const updateAcademicSemesterIntoDB = async (
@@ -59,6 +62,6 @@ const updateAcademicSemesterIntoDB = async (
 export const AcademicSemesterServices = {
   createAcademicSemesterIntoDB,
   getSilgleAcademicSemesterIntoDB,
-  getAllAcademicSemesterIntoDB,
+  getAllAcademicSemestersFromDB,
   updateAcademicSemesterIntoDB,
 };
