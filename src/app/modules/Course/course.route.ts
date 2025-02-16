@@ -32,24 +32,35 @@ router.patch(
   CourseControllers.updateCourse,
 );
 
+router.delete(
+  '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  CourseControllers.deleteCourse,
+);
+
 router.put(
-  '/:courseId/assign/faculties',
+  '/:courseId/assign-faculties',
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
   CourseControllers.assignFacultiesWithCourse,
 );
 
-router.delete(
-  '/:courseId/remove/faculties',
-  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
-  validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
-  CourseControllers.removeFacultiesFromCourse,
+router.get(
+  '/:courseId/get-faculties',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
+  CourseControllers.getFacultiesWithCourse,
 );
 
 router.delete(
-  '/:id',
+  '/:courseId/remove-faculties',
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
-  CourseControllers.deleteCourse,
+  validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
+  CourseControllers.removeFacultiesFromCourse,
 );
 
 router.get(

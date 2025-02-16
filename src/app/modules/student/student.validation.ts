@@ -56,6 +56,7 @@ const createStudentValidationSchema = z.object({
       localGuardian: localGuardianValidationSchema,
       admissionSemester: z.string(),
       academicDepartment: z.string(),
+      academicFaculty: z.string(),
     }),
   }),
 });

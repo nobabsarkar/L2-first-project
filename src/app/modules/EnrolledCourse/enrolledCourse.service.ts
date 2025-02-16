@@ -151,11 +151,6 @@ const getAllEnrolledCourseFromDB = async () => {
   return result;
 };
 
-const getSingleEnrolledCourseFromDB = async (id: string) => {
-  const result = await EnrolledCourse.findById(id);
-  return result;
-};
-
 const updateEnrolledCourseMarksIntoDB = async (
   facultyId: string,
   payload: Partial<TEnorolledCourse>,
@@ -239,5 +234,4 @@ export const EnrolledCourseServices = {
   createEnrolledCourseIntoDB,
   updateEnrolledCourseMarksIntoDB,
   getAllEnrolledCourseFromDB,
-  getSingleEnrolledCourseFromDB,
 };
