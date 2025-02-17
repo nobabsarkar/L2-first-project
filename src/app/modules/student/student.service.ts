@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import mongoose from 'mongoose';
 import { User } from '../user/user.model';
 import QueryBuilder from '../../builder/QueryBuilder';
-import { studentSearchableField } from './student.constant';
+import { studentSearchableFields } from './student.constant';
 
 const createStudentIntoDB = async (studentData: TStudent) => {
   if (await Student.isUserExists(studentData.id)) {
@@ -24,7 +24,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
       .populate('academicDepartment academicFaculty'),
     query,
   )
-    .search(studentSearchableField)
+    .search(studentSearchableFields)
     .filter()
     .sort()
     .paginate()
