@@ -31,6 +31,7 @@ const getMyOfferedCourses = catchAsync(async (req, res) => {
     userId,
     req.query,
   );
+
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
