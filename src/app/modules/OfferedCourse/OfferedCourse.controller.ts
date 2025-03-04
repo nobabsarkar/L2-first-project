@@ -36,6 +36,7 @@ const getMyOfferedCourses = catchAsync(async (req, res) => {
     statusCode: StatusCodes.OK,
     success: true,
     message: 'OfferedCourse retrived successfully!',
+    // data: result,
     meta: result.meta,
     data: result.result,
   });
