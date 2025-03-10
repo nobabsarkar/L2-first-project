@@ -3,6 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { EnrolledCourseServices } from './enrolledCourse.service';
 
+// create enrolled courses
 const createEnrolledCourse = catchAsync(async (req, res) => {
   const userId = req.user.userId;
 
