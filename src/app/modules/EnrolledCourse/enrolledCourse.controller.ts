@@ -20,6 +20,7 @@ const createEnrolledCourse = catchAsync(async (req, res) => {
   });
 });
 
+// get my enrolled courses
 const getMyEnrolledCourses = catchAsync(async (req, res) => {
   const studentId = req.user.userId;
 
