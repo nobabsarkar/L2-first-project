@@ -53,8 +53,26 @@ const updateEnrolledCourseMarks = catchAsync(async (req, res) => {
   });
 });
 
+const getMyFacultyCourses = catchAsync(async (req, res) => {
+  const facultyId = req.user.userId;
+
+  const result = await EnrolledCourseServices.getMyFacultyCoursesFromDB(
+    facultyId,
+    req.query,
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Faculty taken courses are retrivied succesfully',
+    meta: result.meta,
+    data: result.result,
+  });
+});
+
 export const EnrolledCourseControllers = {
   createEnrolledCourse,
   updateEnrolledCourseMarks,
   getMyEnrolledCourses,
+  getMyFacultyCourses,
 };
