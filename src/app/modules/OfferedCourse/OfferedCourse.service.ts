@@ -24,7 +24,7 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     endTime,
   } = payload;
 
-  // check if the semester registration id is exists!
+  // check if the semester registration id is exists! here
   const isSemesterRegistrationExits =
     await SemesterRegistration.findById(semesterRegistration);
   if (!isSemesterRegistrationExits) {
