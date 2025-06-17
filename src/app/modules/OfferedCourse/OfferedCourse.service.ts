@@ -117,9 +117,7 @@ const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
       .populate('semesterRegistration')
       .populate('academicSemester')
       .populate('academicFaculty')
-      .populate('academicDepartment')
-      .populate('course')
-      .populate('faculty'),
+      .populate('academicDepartment'),
     query,
   )
     .filter()
